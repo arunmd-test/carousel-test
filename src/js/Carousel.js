@@ -24,11 +24,33 @@ class Carousel {
         this.nextButton = null; // Reference to the next button
     }
 
+    resetImagesList(offset) {
+        for (let i = 0, j = null; i < this.images.length; i++) {
+            if (this.images[i].active) {
+                this.images[i].active = false;
+                j = offset > 0 ? ++i : --i;
+            }
+            if (i === j) {
+                this.images[i].active = true;
+            }
+        }
+
+        return;
+    }
+
+    centerImage(offset) {
+        return () => {
+            this.resetImagesList(offset);
+        };
+    }
+
     createFooter() {
         const footer = createElement('div', FOOTER_CLASS);
 
         this.prevButton = createElement('button', BUTTON_CLASS, 'prev', { 'role': 'button' });
         this.nextButton = createElement('button', BUTTON_CLASS, 'next', { 'role': 'button' });
+        this.prevButton.onclick = this.centerImage(-1);
+        this.nextButton.onclick = this.centerImage(+1);
 
         footer.append(this.prevButton, this.nextButton);
 
