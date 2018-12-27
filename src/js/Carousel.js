@@ -2,6 +2,7 @@
     Carousel widget component module
 */
 
+import { createElement } from './utils';
 
 class Carousel {
     constructor(element, title, images) {
