@@ -47,3 +47,29 @@ body {
     color: #006896;
     margin: 5px 0 0;
 }
+
+.carousel-footer {
+    padding: 15px;
+    text-align: center;
+}
+
+.carousel-button {
+    background-color: #006896;
+    color: #fff;
+    border: none;
+    font-size: 1em;
+    text-transform: capitalize;
+    padding: 10px 20px;
+    margin: 0 3px;
+    cursor: pointer;
+}
+
+.carousel-button:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.carousel-button:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}

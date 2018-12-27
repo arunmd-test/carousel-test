@@ -3,7 +3,7 @@
 */
 
 import { createElement } from './utils';
-import { MAX_IMAGES, CAROUSEL_CLASS, HEADER_CLASS, STRIP_CLASS, ITEM_CLASS, ITEM_ACTIVE_CLASS, IMG_CLASS, IMG_TITLE_CLASS } from './constants';
+import { MAX_IMAGES, CAROUSEL_CLASS, HEADER_CLASS, STRIP_CLASS, ITEM_CLASS, ITEM_ACTIVE_CLASS, IMG_CLASS, IMG_TITLE_CLASS, FOOTER_CLASS, BUTTON_CLASS } from './constants';
 
 
 class Carousel {
@@ -20,6 +20,19 @@ class Carousel {
         this.activeIndex = Math.ceil(MAX_IMAGES / 2); // Index of the active item, to be centered in the middle
         this.stripItems = []; // Reference to the carousel strip items
         this.allPlacementIndexes = []; // Reference to all carousel placement indexes
+        this.prevButton = null; // Reference to the prev button
+        this.nextButton = null; // Reference to the next button
+    }
+
+    createFooter() {
+        const footer = createElement('div', FOOTER_CLASS);
+
+        this.prevButton = createElement('button', BUTTON_CLASS, 'prev', { 'role': 'button' });
+        this.nextButton = createElement('button', BUTTON_CLASS, 'next', { 'role': 'button' });
+
+        footer.append(this.prevButton, this.nextButton);
+
+        return footer;
     }
 
     setPlacementImages() {
@@ -125,7 +138,7 @@ class Carousel {
 
     createCarousel() {
         const carousel = createElement('div', CAROUSEL_CLASS, '', { 'aria-label': this.title, 'role': 'region' });
-        carousel.append(this.createHeader(), this.createStrip());
+        carousel.append(this.createHeader(), this.createStrip(), this.createFooter());
 
         return this.carousel = carousel;
     };
