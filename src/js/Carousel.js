@@ -20,12 +20,12 @@ class Carousel {
     }
 
     createHeader() {
-        return createElement('h1', HEADER_CLASS, this.title);
+        return createElement('h1', HEADER_CLASS, this.title, { 'role': 'heading' });
     }
 
     createCarousel() {
-        const carousel = createElement('div', CAROUSEL_CLASS);
-        carousel.appendChild(this.createHeader());
+        const carousel = createElement('div', CAROUSEL_CLASS, '', { 'aria-label': this.title, 'role': 'region' });
+        carousel.append(this.createHeader());
 
         return this.carousel = carousel;
     };
