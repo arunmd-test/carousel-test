@@ -3,6 +3,8 @@
 */
 
 import { createElement } from './utils';
+import { MAX_IMAGES, HEADER_CLASS } from './constants';
+
 
 class Carousel {
     constructor(element, title, images) {
