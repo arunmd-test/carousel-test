@@ -24,6 +24,11 @@ class Carousel {
         this.nextButton = null; // Reference to the next button
     }
 
+    destroyCarousel() {
+        this.stripItems = [];
+        return this.carousel.parentNode.removeChild(this.carousel);
+    }
+
     resetImagesList(offset) {
         for (let i = 0, j = null; i < this.images.length; i++) {
             if (this.images[i].active) {
@@ -41,6 +46,8 @@ class Carousel {
     centerImage(offset) {
         return () => {
             this.resetImagesList(offset);
+            this.destroyCarousel();
+            this.init();
         };
     }
 
