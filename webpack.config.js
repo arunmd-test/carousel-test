@@ -7,7 +7,7 @@ const config = {
         path: path.join(__dirname, 'build'),
         filename: 'carousel.min.js'
     },
-    mode: 'development',
+    mode: 'production',
     module: {
         rules: [
             {

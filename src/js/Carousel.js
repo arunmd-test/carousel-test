@@ -3,10 +3,20 @@
 */
 
 import { createElement } from './utils';
-import { MAX_IMAGES, CAROUSEL_CLASS, HEADER_CLASS, STRIP_CLASS, ITEM_CLASS, ITEM_ACTIVE_CLASS, IMG_CLASS, IMG_TITLE_CLASS, FOOTER_CLASS, BUTTON_CLASS } from './constants';
+import { MAX_IMAGES, HEADER_CLASS, STRIP_CLASS, ITEM_CLASS, ITEM_ACTIVE_CLASS, CAROUSEL_CLASS, IMG_CLASS, IMG_TITLE_CLASS, FOOTER_CLASS, BUTTON_CLASS } from './constants';
 
-
+/**
+ * Creates a new Carousel class
+ * @class
+*/
 class Carousel {
+    /**
+     * Create a carousel
+     * @function
+     * @param {HTMLElement} element - Element where the carousel widget is to be inserted
+     * @param {string} title - Title of the carousel widget
+     * @param {Object[]} images - Images to be loaded to the widget
+    */
     constructor(element, title, images) {
         if (!element || !title || !images.length) {
             throw new Error('Cannot initialise carousel without required parameters');
@@ -17,13 +27,18 @@ class Carousel {
 
         this.maxImages = MAX_IMAGES; // Max number of images to be displayed in the carousel strip
         this.carousel = null; // Reference to the carousel widget element
+        this.prevButton = null; // Reference to the prev button
+        this.nextButton = null; // Reference to the next button
         this.activeIndex = Math.ceil(MAX_IMAGES / 2); // Index of the active item, to be centered in the middle
         this.stripItems = []; // Reference to the carousel strip items
         this.allPlacementIndexes = []; // Reference to all carousel placement indexes
-        this.prevButton = null; // Reference to the prev button
-        this.nextButton = null; // Reference to the next button
     }
 
+    /**
+     * Disables the previous and next buttons if the end or start of the carousel has been reached
+     * @function
+     * @returns {null}
+    */
     disableButtons() {
         if (this.allPlacementIndexes[0] === 0) {
             this.prevButton.disabled = true;
@@ -35,11 +50,22 @@ class Carousel {
         return;
     }
 
+    /**
+     * Destroys the carousel widget instance
+     * @function
+     * @returns {HTMLElement} The deleted carousel widget element
+    */
     destroyCarousel() {
         this.stripItems = [];
         return this.carousel.parentNode.removeChild(this.carousel);
     }
 
+    /**
+     * Resets the image list based on the given offset
+     * @function
+     * @param {number} offset - Offset by which the previous or next image needs to be centered
+     * @returns {null}
+    */
     resetImagesList(offset) {
         for (let i = 0, j = null; i < this.images.length; i++) {
             if (this.images[i].active) {
@@ -54,6 +80,12 @@ class Carousel {
         return;
     }
 
+    /**
+     * Centers the previous or next image by resetting the images list, destroying the carousel instance and re-initialising it
+     * @function
+     * @param {number} offset - Offset by which the previous or next image needs to be centered
+     * @returns {null}
+    */
     centerImage(offset) {
         return () => {
             this.resetImagesList(offset);
@@ -63,6 +95,11 @@ class Carousel {
         };
     }
 
+    /**
+     * Creates the carousel widget footer
+     * @function
+     * @returns {HTMLElement} The carousel widget footer element
+    */
     createFooter() {
         const footer = createElement('div', FOOTER_CLASS);
 
@@ -76,6 +113,11 @@ class Carousel {
         return footer;
     }
 
+    /**
+     * Sets the image sources and titles for all the current strip items
+     * @function
+     * @returns {null}
+    */
     setPlacementImages() {
         let images = [];
 
@@ -99,6 +141,14 @@ class Carousel {
         return;
     }
 
+    /**
+     * Returns the placement indexes for either sides of the centered image
+     * @function
+     * @param {string} type - Type of side (left or right)
+     * @param {number} activeImageIndex - Index of the active image
+     * @param {Object} placements - Strip placement counts (No. of images that need to be placed on either side of the centered image)
+     * @returns {number[]} The sorted placement indexes
+    */
     getStripPlacementIndexes(type, activeImageIndex, placements) {
         let placementIndexes = [];
 
@@ -115,6 +165,11 @@ class Carousel {
         return placementIndexes.sort();
     }
 
+    /**
+     * Returns the count of the placement indexes for either sides of the centered image
+     * @function
+     * @returns {Object} Strip placement counts (No. of images that need to be placed on either side of the centered image)
+    */
     getStripPlacementsCount() {
         let placements = { left: 0, right: 0 };
 
@@ -129,6 +184,11 @@ class Carousel {
         return placements;
     }
 
+    /**
+     * Calculates the placement indexes for either side of the centered image and displays the images on those indexes
+     * @function
+     * @returns {null}
+    */
     displayImages() {
         const placements = this.getStripPlacementsCount();
         let activeImageIndex;
@@ -147,6 +207,12 @@ class Carousel {
         return this.setPlacementImages();
     }
 
+    /**
+     * Creates a strip item element
+     * @function
+     * @param {boolean} isActive - Flag to indicate whether the current item will be the active item in the carousel or not
+     * @returns {HTMLElement} The strip item element
+    */
     createItem(isActive) {
         const item = createElement('li', isActive ? ITEM_ACTIVE_CLASS : ITEM_CLASS, '', { 'role': 'listitem' });
         const img = createElement('img', IMG_CLASS);
@@ -158,6 +224,11 @@ class Carousel {
         return item;
     }
 
+    /**
+     * Creates the strip list element and displays the images in the list
+     * @function
+     * @returns {HTMLElement} The strip list element
+    */
     createStrip() {
         const strip = createElement('ul', STRIP_CLASS, '', { 'role': 'list' });
 
@@ -173,10 +244,20 @@ class Carousel {
         return strip;
     }
 
+    /**
+     * Creates the carousel widget header
+     * @function
+     * @returns {HTMLElement} The carousel widget header element
+    */
     createHeader() {
         return createElement('h1', HEADER_CLASS, this.title, { 'role': 'heading' });
     }
 
+    /**
+     * Creates the carousel widget main element
+     * @function
+     * @returns {HTMLElement} The carousel widget main element
+    */
     createCarousel() {
         const carousel = createElement('div', CAROUSEL_CLASS, '', { 'aria-label': this.title, 'role': 'region' });
         carousel.append(this.createHeader(), this.createStrip(), this.createFooter());
@@ -184,6 +265,11 @@ class Carousel {
         return this.carousel = carousel;
     };
 
+    /**
+     * Initialises the carousel widget in the specified element
+     * @function
+     * @returns {HTMLElement} The carousel widget main element
+    */
     init() {
         this.element.appendChild(this.createCarousel());
     };
