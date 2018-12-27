@@ -24,6 +24,17 @@ class Carousel {
         this.nextButton = null; // Reference to the next button
     }
 
+    disableButtons() {
+        if (this.allPlacementIndexes[0] === 0) {
+            this.prevButton.disabled = true;
+        }
+        if (this.allPlacementIndexes[this.allPlacementIndexes.length - 1] === this.images.length - 1) {
+            this.nextButton.disabled = true;
+        }
+
+        return;
+    }
+
     destroyCarousel() {
         this.stripItems = [];
         return this.carousel.parentNode.removeChild(this.carousel);
@@ -48,6 +59,7 @@ class Carousel {
             this.resetImagesList(offset);
             this.destroyCarousel();
             this.init();
+            this.disableButtons();
         };
     }
 
