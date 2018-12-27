@@ -3,7 +3,7 @@
 */
 
 import { createElement } from './utils';
-import { MAX_IMAGES, HEADER_CLASS } from './constants';
+import { MAX_IMAGES, CAROUSEL_CLASS, HEADER_CLASS } from './constants';
 
 
 class Carousel {
@@ -14,10 +14,24 @@ class Carousel {
         this.element = element;
         this.title = title;
         this.images = images;
+
+        this.maxImages = MAX_IMAGES; // Max number of images to be displayed in the carousel strip
+        this.carousel = null; // Reference to the carousel widget element
     }
 
-    init() {
+    createHeader() {
+        return createElement('h1', HEADER_CLASS, this.title);
+    }
 
+    createCarousel() {
+        const carousel = createElement('div', CAROUSEL_CLASS);
+        carousel.appendChild(this.createHeader());
+
+        return this.carousel = carousel;
+    };
+
+    init() {
+        this.element.appendChild(this.createCarousel());
     };
 }
 
