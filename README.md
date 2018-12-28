@@ -30,7 +30,7 @@ This module is written in `Vanilla JS` as well which leverages the `ES6 Class` p
 
 The entry point of the carousel widget component exposes a `Carousel` class on the global `window` object.
 
-> ./src/Carousel.js
+> ./src/js/Carousel.js
 
 The Carousel class itself is an ES6 class which renders the carousel widget in the specified element and takes care of updating the carousel when a user clicks on either the `prev` or `next` buttons. Whenever a new image needs to be centered, it resets the images list (based on the left/right offset), destroys the carousel instance and re-initialises it.
 
